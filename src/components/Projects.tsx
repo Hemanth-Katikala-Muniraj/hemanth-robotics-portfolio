@@ -1,98 +1,57 @@
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowUpRight, GithubLogo, Globe } from 'phosphor-react';
+import { useEffect, useMemo, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowUpRight } from "phosphor-react";
+import { Link } from "react-router-dom";
+import { projects } from "@/data/projects";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Projects = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const featuredGridRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
 
-  const projects = [
-    {
-      id: 1,
-      title: "Bike-time – Immersive Experience",
-      description: "Developed an interactive biking experience website featuring dynamic animations, route exploration, performance stats, and a sleek responsive interface for riders and enthusiasts.",
-      image: "/Images/project-1.jpg",
-      tech: ["React", "Node.js", "Framer Motion", "Express.js", "PostgreSQL", "Tailwind CSS", "Docker"],
-      liveUrl: "",
-      githubUrl: ""
-    },
-
-    {
-      id: 2,
-      title: "3D Portfolio Website – Interactive & Animated",
-      description: "A visually engaging portfolio website featuring real-time 3D elements with Spline, fluid animations using GSAP, and a responsive UI built with React and Tailwind CSS.",
-      image: "/Images/project-2.jpg",
-      tech: ["React", "Spline", "GSAP", "Tailwind CSS", "Vercel"],
-      liveUrl: "",
-      githubUrl: ""
-    },
-    {
-      id: 3,
-      title: "3D Website Landing Page",
-      description: "A modern 3D landing page built with Spline, HTML, and CSS, featuring smooth animations, interactive visuals, and a responsive, elegant layout for an engaging and immersive user experience across all devices.",
-      image: "/Images/project-3.jpg",
-      tech: ["HTML", "CSS", "Spline"],
-      liveUrl: "",
-      githubUrl: ""
-    }
-
-  ];
+  const featuredProjects = useMemo(
+    () => projects.filter((p) => p.featured).slice(0, 3),
+    []
+  );
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Ensure nothing starts hidden permanently
+      gsap.set(titleRef.current, { opacity: 1 });
+      gsap.set(featuredGridRef.current, { opacity: 1 });
+
       gsap.from(titleRef.current?.children || [], {
-        y: 50,
+        y: 30,
         opacity: 0,
-        duration: 1,
-        stagger: 0.2,
+        duration: 0.8,
+        stagger: 0.12,
         ease: "power3.out",
+        immediateRender: false,
         scrollTrigger: {
           trigger: titleRef.current,
-          start: "top 80%"
-        }
+          start: "top 85%",
+          once: true,
+        },
       });
 
-      gsap.from(containerRef.current?.children || [], {
-        y: 100,
+      gsap.from(featuredGridRef.current?.children || [], {
+        y: 40,
         opacity: 0,
-        scale: 0.9,
-        duration: 0.8,
+        duration: 0.7,
         stagger: 0.15,
         ease: "power3.out",
+        immediateRender: false,
         scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 80%"
-        }
+          trigger: featuredGridRef.current,
+          start: "top 85%",
+          once: true,
+        },
       });
 
-      const cards = containerRef.current?.children;
-      if (cards) {
-        Array.from(cards).forEach((card) => {
-          const element = card as HTMLElement;
-
-          element.addEventListener('mouseenter', () => {
-            gsap.to(element, {
-              y: -10,
-              scale: 1.02,
-              duration: 0.3,
-              ease: "power2.out"
-            });
-          });
-
-          element.addEventListener('mouseleave', () => {
-            gsap.to(element, {
-              y: 0,
-              scale: 1,
-              duration: 0.3,
-              ease: "power2.out"
-            });
-          });
-        });
-      }
+      ScrollTrigger.refresh();
     }, sectionRef);
 
     return () => ctx.revert();
@@ -106,25 +65,21 @@ const Projects = () => {
             Featured <span className="text-primary-glow">Projects</span>
           </h2>
           <div className="w-20 h-1 bg-gradient-primary rounded-full mx-auto mb-6" />
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A curated collection of full stack projects demonstrating my expertise in building modern, scalable web applications — from intuitive frontends to robust backend systems.          </p>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            A curated set of robotics projects highlighting autonomy, LiDAR perception, state estimation, motion planning, and integration.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project) => (
-            <div key={project.id} className="glass cursor-pointer rounded-xl overflow-hidden hover:shadow-glow-primary transition-all duration-500 group">
+        <div ref={featuredGridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {featuredProjects.map((project) => (
+            <div key={project.id} className="glass rounded-xl overflow-hidden hover:shadow-glow-primary transition-all duration-500 group">
               <div className="relative overflow-hidden h-48">
-                <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <a href={project.liveUrl} className="w-10 h-10 bg-primary/90 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-primary transition-colors duration-200">
-                    <Globe size={18} className="text-primary-foreground" />
-                  </a>
-                  <a href={project.githubUrl} className="w-10 h-10 bg-secondary/90 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-secondary transition-colors duration-200">
-                    <GithubLogo size={18} className="text-secondary-foreground" />
-                  </a>
-                </div>
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
 
               <div className="p-6">
@@ -133,31 +88,43 @@ const Projects = () => {
                 </h3>
 
                 <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
-                  {project.description}
+                  {project.shortDescription}
                 </p>
 
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tech.map((tech) => (
-                    <span key={tech} className="px-3 py-1 bg-primary/10 text-primary-glow text-xs rounded-full border border-primary/20">
+                    <span
+                      key={`${project.id}-${tech}`}
+                      className="px-3 py-1 bg-primary/10 text-primary-glow text-xs rounded-full border border-primary/20"
+                    >
                       {tech}
                     </span>
                   ))}
                 </div>
 
-                <a href={project.liveUrl} className="inline-flex items-center gap-2 text-primary-glow hover:text-primary transition-colors duration-300 group/link">
-                  View Project
-                  <ArrowUpRight size={16} className="group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform duration-300" />
-                </a>
+                <Link
+                  to={`/projects/${project.slug}`}
+                  className="inline-flex items-center gap-2 text-primary-glow hover:text-primary transition-colors duration-300 group/link"
+                >
+                  View Case Study
+                  <ArrowUpRight
+                    size={16}
+                    className="group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform duration-300"
+                  />
+                </Link>
               </div>
             </div>
           ))}
         </div>
 
-        {/* <div className="text-center mt-12">
-          <button className="px-8 py-3 bg-gradient-secondary text-secondary-foreground rounded-lg hover:shadow-glow-secondary transition-all duration-300 hover:scale-105">
+        <div className="text-center mt-12">
+          <Link
+            to="/projects"
+            className="inline-flex items-center justify-center px-8 py-3 bg-gradient-secondary text-secondary-foreground rounded-lg hover:shadow-glow-secondary transition-all duration-300 hover:scale-105"
+          >
             View All Projects
-          </button>
-        </div> */}
+          </Link>
+        </div>
       </div>
 
       <div className="absolute top-1/4 left-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl -translate-x-1/2" />
