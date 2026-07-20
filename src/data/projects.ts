@@ -20,8 +20,51 @@ export type Project = {
 
 export const projects: Project[] = [
   // =========================
-  // FEATURED (Top 3)
+  // FEATURED (Top 4)
   // =========================
+
+  {
+    id: 14,
+    slug: "autonomous-uav-navigation-dynamic-obstacle-avoidance",
+    title: "Autonomous UAV Navigation & Dynamic Obstacle Avoidance",
+    featured: true,
+    image: "/Images/Autonomous UAV Navigation.png",
+    tech: [
+      "MATLAB",
+      "UAV Simulation",
+      "LiDAR",
+      "Occupancy Grid Mapping",
+      "Artificial Potential Fields",
+      "Control Systems",
+      "FPV",
+      "Telemetry",
+    ],
+    shortDescription:
+      "Built an end-to-end autonomous UAV simulation in MATLAB with waypoint navigation, 360° LiDAR sensing, dynamic obstacle avoidance, wind compensation, occupancy mapping, and precision landing.",
+    longDescription:
+      "Developed a complete autonomous UAV mission simulation in MATLAB covering sensing, navigation, mapping, obstacle avoidance, disturbance rejection, visualization, telemetry, and landing control. The UAV follows a waypoint-based route while processing simulated 360-degree LiDAR measurements and updating an occupancy-grid map. An Artificial Potential Field controller generates repulsive and tangential commands around static obstacles and a moving bird, while wind-compensation logic limits trajectory deviation. The mission concludes with a multi-stage landing sequence consisting of approach alignment, controlled descent, flare, yaw stabilization, touchdown verification, and ground lock. The system also records CSV and MAT telemetry, exports an MP4 mission video, and automatically generates mission-performance reports.",
+    highlights: [
+      "End-to-end autonomy pipeline integrating navigation, LiDAR sensing, mapping, avoidance, control, and landing",
+      "APF-based static and dynamic obstacle avoidance with a moving bird encounter",
+      "Real-time FPV dashboard, telemetry recording, MP4 export, and automated mission analytics",
+    ],
+    responsibilities: [
+      "Designed waypoint navigation and integrated simulated 360-degree LiDAR sensing with occupancy-grid mapping",
+      "Implemented Artificial Potential Field avoidance using repulsive and tangential motion components",
+      "Modeled a moving bird and wind disturbances to validate dynamic avoidance and trajectory compensation",
+      "Developed a multi-stage landing controller with approach, descent, flare, yaw alignment, and touchdown verification",
+      "Built real-time visualization, CSV/MAT logging, mission video recording, and automated performance-report generation",
+    ],
+    results: [
+      "Completed a 38.0-second autonomous mission covering approximately 34.9 metres",
+      "Maintained approximately 0.80 metres of minimum clearance during the dynamic bird encounter",
+      "Achieved approximately 92.7% occupancy-map coverage during the recorded mission",
+      "Completed a smooth landing with approximately 0.02 m/s touchdown vertical speed",
+    ],
+    githubUrl:
+      "https://github.com/Hemanth-Katikala-Muniraj/Autonomous-UAV-Navigation-MATLAB",
+    liveUrl: "",
+  },
 
   {
     id: 1,
