@@ -110,8 +110,8 @@ const Hero = () => {
 
   const downloadCV = () => {
     const link = document.createElement("a");
-    link.href = "/Images/Hemanth-Resume.pdf"; // <-- update your pdf filename in public/Images
-    link.download = "Hemanth-Katikala-Muniraj-Resume.pdf";
+    link.href = "/Images/Hemanth_Katikala_Muniraj_Resume.pdf"; // <-- update your pdf filename in public/Images
+    link.download = "Hemanth_Katikala_Muniraj_Resume.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
